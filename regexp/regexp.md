@@ -59,7 +59,6 @@ true
 false
 false
 ```
-
 ## 内容
 
 ### func Match(pattern string, b []byte) (matched bool, err error)
@@ -78,7 +77,6 @@ false
 `QuoteMeta`对输入字符串中所有的正则表达式元字符都加上过滤，返回一个可以进行正则匹配的文本。例如, `QuoteMeta("[foo]")`将返回`\[foo\]`
 
 ### type Regexp
-
 ```
 type Regexp struct {
     // 包含过滤后或输出字段
@@ -89,3 +87,49 @@ type Regexp struct {
 ### func Compile(expr string) (*Regexp, error)
 
 编译正则表达式并返回。如果处理成功，则返回一个可以用来匹配字符串的`Regexp`对象。
+
+当对文本进行匹配时，正则表达式总是返回一个尽可能在输入的最开始(最左边的)，并且
+
+### func CompilePOSIX(expr string) (*Regexp, error)
+
+### func MustCompile(str string) *Regexp
+
+`MustCompile`和`Compile`很相似，但是如果表达式不能够被正确的解析将会出现`panic`。它简化了安全初始化编译正则表达式的全局变量。
+
+### func MustCompilePOSIX(str string) *Regexp
+
+`MustCompilePOSIX`和`CompilePOSIX`很相似，但是如果表达式不能够被正确的解析将会出现`panic`。它简化了安全初始化编译正则表达式的全局变量。
+
+### func (*Regexp) Expand
+    ```
+    func (re *Regexp)Expand(dst []byte, template []byte, srt []byte, match []int) []byte
+    ```
+
+`Expand`
+
+### func (*Regexp) ExpandString
+```
+func (re *Regexp) ExpandString(dst []byte, template []byte, str string, match []byte) []byte
+```
+
+`ExpandString`
+
+### func (*Regexp) Find()
+```
+func (re *Regexp) Find(b []byte) []byte
+```
+
+`Find`返回一个slice，该slice包含正则表达式从最左边开始匹配的第一个结果。如果没有任何匹配则返回一个`nil`。
+
+### func (*Regexp) FindAll()
+```
+func (re *Regexp) FindAll(b []byte, n int) [][]byte 
+```
+`FindAll`是`All`版本的`Find`方法，它返回一个连续匹配的表达式结果，在regexp包的注解中有说到。如果没有匹配结果则返回一个`nil`。
+
+
+### func (*Regexp) FindAllIndex
+```
+func (re *Regexp) FindAllIndex(b []byte, n int) [][]int
+```
+`FindAllIndex`是`All`版本的`FindIndex`(在下文)。它返回一个
